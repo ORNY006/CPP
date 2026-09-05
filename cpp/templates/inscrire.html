@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Inscription</title>
+<style>body{font-family:Arial;background:#f4f6fb;padding:15px}.box{max-width:600px;margin:auto;background:white;padding:20px;border-radius:12px}select,input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc}button{width:100%;padding:14px;background:#1e3a8a;color:white;border:none;border-radius:8px;font-weight:bold}.msg{padding:12px;border-radius:8px;margin:10px 0;font-weight:bold}.error{background:#fee2e2;color:#991b1b}.success{background:#d1fae5;color:#065f46}label{font-weight:bold;margin-top:10px;display:block}</style>
+<script>
+function updateSections(){
+  let niv = document.getElementById('niveau').value;
+  let sec = document.getElementById('section');
+  sec.innerHTML = "";
+  if(niv.includes('Maternelle')){
+    sec.innerHTML = '<option value="Maternelle">Maternelle</option>';
+  } else if(['1ère','2ème','3ème','4ème','5ème','6ème'].includes(niv) && !niv.includes('Primaire')){
+    // C'est pour tester, on va séparer
+  }
+}
+function onNiveauChange(){
+  let niv = document.getElementById('niveau').value;
+  let sec = document.getElementById('section');
+  sec.innerHTML = "";
+  if(niv.endsWith('Maternelle')){
+    sec.innerHTML = '<option>Maternelle</option>';
+  } else if(['7ème','8ème'].includes(niv)){
+    sec.innerHTML = '<option>Secondaire - placement auto en A/B</option>';
+  } else if(niv.startsWith('1ère P') || niv.startsWith('2ème P') || niv.startsWith('3ème P') || niv.startsWith('4ème P') || niv.startsWith('5ème P') || niv.startsWith('6ème P')){
+    sec.innerHTML = '<option value="Primaire">Primaire - placement auto en A/B/C</option>';
+  } else {
+    // Humanités 1ère-6ème
+    sec.innerHTML = '<option value="">-- Choisis l\'option --</option><option>Scientifique</option><option>Commerciale</option><option>Littéraire</option><option>Pédagogie</option><option>Hôtellerie</option><option>Coupe et Couture</option>';
+  }
+}
+</script>
+</head><body><div class="box">
+<h2>Inscription CPP</h2>
+{% if message %}<div class="msg {% if 'BLOQUÉ' in message %}error{% else %}success{% endif %}">{{message}}</div>{% endif %}
+{% if new_matricule %}<h3>Matricule: {{new_matricule}}</h3>{% endif %}
+<form method="POST">{% csrf_token %}
+<input type="text" name="nom_complet" placeholder="Nom complet de l'élève" required>
+
+<label>1. Choisis le Niveau</label>
+<select id="niveau" name="niveau" onchange="onNiveauChange()" required>
+<option value="">-- Niveau --</option>
+<optgroup label="MATERNELLE"><option>1ère Maternelle</option><option>2ème Maternelle</option><option>3ème Maternelle</option></optgroup>
+<optgroup label="PRIMAIRE (auto A,B,C)"><option>1ère Primaire</option><option>2ème Primaire</option><option>3ème Primaire</option><option>4ème Primaire</option><option>5ème Primaire</option><option>6ème Primaire</option></optgroup>
+<optgroup label="SECONDAIRE - 7ème et 8ème (auto A,B)"><option>7ème</option><option>8ème</option></optgroup>
+<optgroup label="HUMANITÉS - 1ère à 6ème"><option>1ère</option><option>2ème</option><option>3ème</option><option>4ème</option><option>5ème</option><option>6ème</option></optgroup>
+</select>
+
+<label>2. Choisis l'Option / Sous-classe</label>
+<select id="section" name="section" required>
+<option value="">-- D'abord choisis le niveau --</option>
+</select>
+
+<button type="submit">Inscrire (placement automatique)</button>
+</form>
+<p style="font-size:12px;color:#666;margin-top:15px">Primaire: machine met en A puis B puis C. 7ème/8ème: machine met en A puis B. Humanités: tu choisis 1ère + Scientifique => machine met en 1ère Scientifique A/B/C. Si 32 partout => BLOQUÉ.</p>
+<a href="/">← Accueil</a>
+</div></body></html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Collège Prince de la Paix</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb}
+.header{background:#1e3a8a;color:white;text-align:center;padding:35px 15px 110px 15px}
+.header h1{margin:0;font-size:28px;font-weight:bold}
+.header p{margin:15px auto 0 auto;max-width:700px;font-size:14px;line-height:1.6;opacity:0.9}
+.container{max-width:1000px;margin:0 auto;padding:20px;margin-top:-60px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:25px;margin-top:50px}
+.card{background:white;padding:30px 15px;border-radius:12px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.08);text-decoration:none;color:#333;transition:0.2s}
+.card:hover{transform:translateY(-5px);box-shadow:0 8px 20px rgba(0,0,0,0.12)}
+.card.active{background:#1e3a8a;color:white}
+.icon{font-size:40px;margin-bottom:12px}
+.card h3{margin:10px 0 5px 0;font-size:16px}
+.card p{font-size:12px;color:#666;margin:0;line-height:1.4}
+.card.active p{color:#cbd5e1}
+@media(max-width:800px){.grid{grid-template-columns:1fr 1fr} .header h1{font-size:22px}}
+@media(max-width:500px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>Bienvenue au Collège Prince de la Paix</h1>
+<p>Excellence, Discipline et Travail. Le Collège Prince de la Paix forme les leaders de demain depuis plus de 20 ans. Inscrivez vos enfants dans un cadre d'apprentissage moderne et rigoureux.</p>
+</div>
+
+<div class="container">
+<div class="grid">
+
+<a href="/inscrire/" class="card">
+<div class="icon">📝</div>
+<h3>Inscription</h3>
+<p>Nouvel élève - Remplir le formulaire</p>
+</a>
+
+<a href="/reinscrire/" class="card active">
+<div class="icon">🔄</div>
+<h3>Réinscription</h3>
+<p>Ancien élève - Confirmer votre retour</p>
+</a>
+
+<a href="/resultat/" class="card">
+<div class="icon">📊</div>
+<h3>Résultat</h3>
+<p>Consulter votre bulletin scolaire</p>
+</a>
+
+<a href="/a_propos/" class="card">
+<div class="icon">🏫</div>
+<h3>À propos</h3>
+<p>Histoire et contact de l'école</p>
+</a>
+
+</div>
+</div>
+
+</body>
+</html>

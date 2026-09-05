@@ -1,0 +1,51 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Réinscription</title>
+<style>body{font-family:Arial;background:#f4f6fb;padding:15px}.box{max-width:600px;margin:auto;background:white;padding:20px;border-radius:12px}select,input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc}button{width:100%;padding:14px;background:#0d9488;color:white;border:none;border-radius:8px;font-weight:bold}.msg{padding:12px;border-radius:8px;margin:10px 0;font-weight:bold}.error{background:#fee2e2;color:#991b1b}.success{background:#d1fae5;color:#065f46}label{font-weight:bold;margin-top:10px;display:block}</style>
+<script>
+function onNiveauChange(){
+  let niv = document.getElementById('niveau').value;
+  let sec = document.getElementById('section');
+  sec.innerHTML = "";
+  if(niv.includes('Maternelle')){
+    sec.innerHTML = '<option value="Maternelle">Maternelle</option>';
+  } else if(['7ème','8ème'].includes(niv)){
+    sec.innerHTML = '<option>Secondaire - placement auto en A/B</option>';
+  } else if(niv.includes('Primaire')){
+    sec.innerHTML = '<option value="Primaire">Primaire - placement auto en A/B/C</option>';
+  } else if(['1ère','2ème','3ème','4ème','5ème','6ème'].includes(niv)){
+    sec.innerHTML = '<option value="">-- Choisis l\'option --</option><option>Scientifique</option><option>Commerciale</option><option>Littéraire</option><option>Pédagogie</option><option>Hôtellerie</option><option>Coupe et Couture</option>';
+  } else {
+    sec.innerHTML = '<option>-- D\'abord choisis le niveau --</option>';
+  }
+}
+</script>
+</head><body><div class="box">
+<h2>Réinscription CPP</h2><a href="/">← Accueil</a>
+{% if message %}<div class="msg {% if 'BLOQUÉ' in message or 'introuvable' in message %}error{% else %}success{% endif %}">{{message}}</div>{% endif %}
+
+<form method="POST">{% csrf_token %}
+<label>Matricule de l'élève</label>
+<input type="text" name="matricule" placeholder="Ex: CPP-2026-001" required>
+
+<label>1. Nouveau Niveau</label>
+<select id="niveau" name="niveau" onchange="onNiveauChange()" required>
+<option value="">-- Niveau --</option>
+<optgroup label="MATERNELLE"><option>1ère Maternelle</option><option>2ème Maternelle</option><option>3ème Maternelle</option></optgroup>
+<optgroup label="PRIMAIRE"><option>1ère Primaire</option><option>2ème Primaire</option><option>3ème Primaire</option><option>4ème Primaire</option><option>5ème Primaire</option><option>6ème Primaire</option></optgroup>
+<optgroup label="SECONDAIRE 7ème 8ème"><option>7ème</option><option>8ème</option></optgroup>
+<optgroup label="HUMANITÉS"><option>1ère</option><option>2ème</option><option>3ème</option><option>4ème</option><option>5ème</option><option>6ème</option></optgroup>
+</select>
+
+<label>2. Option</label>
+<select id="section" name="section" required>
+<option value="">-- D'abord choisis le niveau --</option>
+</select>
+
+<button type="submit">Réinscrire (placement automatique)</button>
+</form>
+<p style="font-size:12px;color:#666;margin-top:15px">
+- Primaire: machine met en A puis B puis C (32 max)<br>
+- 7ème/8ème: machine met en A puis B (32 max)<br>
+- Humanités: tu choisis 1ère + Scientifique => machine met en 1ère Scientifique A/B/C<br>
+- Si A,B,C complets => BLOQUÉ
+</p>
+</div></body></html>

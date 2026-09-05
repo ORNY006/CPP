@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head><title>Bulletin</title>
+<style>
+body{font-family:Arial}
+.bulletin{border:2px solid #000;padding:20px;max-width:700px;margin:auto}
+.header{text-align:center;font-weight:bold;line-height:1.4}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+th,td{border:1px solid #000;padding:6px}
+@media print{.no-print{display:none}}
+</style>
+</head>
+<body>
+
+<div class="no-print" style="text-align:center;margin:20px">
+<h3>Consultation Bulletin</h3>
+<form method="POST">{% csrf_token %}
+<input name="matricule" placeholder="Matricule" required style="padding:8px;width:250px">
+<button type="submit">Voir</button>
+</form>
+<p style="color:red">{{ message }}</p>
+<a href="/">Retour à l'accueil</a>
+</div>
+
+{% if eleve %}
+<div class="bulletin">
+<div class="header">
+REPUBLIQUE DEMOCRATIQUE DU CONGO<br>Collège Prince de la Paix<br>BULLETIN - {{ eleve.classe }}
+</div>
+<p><b>Nom:</b> {{ eleve.nom_complet }} | <b>Matricule:</b> {{ eleve.matricule }}</p>
+
+{% if resultats %}
+<table>
+<tr><th>Branche</th><th>Obtenu</th><th>Max</th></tr>
+{% for r in resultats %}
+<tr><td>{{ r.branche }}</td><td>{{ r.note_obtenue }}</td><td>{{ r.maximum }}</td></tr>
+{% endfor %}
+<tr style="font-weight:bold"><td>TOTAL</td><td>{{ total_obtenu }}</td><td>{{ total_max }}</td></tr>
+</table>
+<p><b>Pourcentage: {{ pourcentage }}% | Mention: {{ mention }}</b></p>
+{% else %}
+<p style="color:red;text-align:center">⚠️ Aucune note trouvée pour cet élève dans l'admin</p>
+{% endif %}
+
+<p style="text-align:right;margin-top:30px">Fait à Kinshasa, le ..../..../2026<br><br>Le Préfet</p>
+</div>
+<div class="no-print" style="text-align:center;margin-top:10px"><button onclick="window.print()">🖨️ Imprimer</button></div>
+{% endif %}
+
+</body>
+</html>
